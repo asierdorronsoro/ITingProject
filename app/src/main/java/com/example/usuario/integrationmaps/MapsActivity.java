@@ -69,19 +69,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        bmapa= (Button)findViewById(R.id.bmapa);
-        bterreno= (Button)findViewById(R.id.bterreno);
-        bhibrido= (Button)findViewById(R.id.bhibrido);
-        binteriores= (Button)findViewById(R.id.binterior);
 
-        bmapa.setOnClickListener(this);
-        bterreno.setOnClickListener(this);
-        bhibrido.setOnClickListener(this);
-        binteriores.setOnClickListener(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        /*SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(this);*/
 
         //--------------------------
 
@@ -120,13 +112,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        mMap = googleMap;
+       /* codigo que antes había mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         LatLng asador = new LatLng(43.269818, -2.023312);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(asador));
         UiSettings mUiSettings = mMap.getUiSettings();
         mUiSettings.setZoomControlsEnabled(true);
-        mMap.animateCamera( CameraUpdateFactory.zoomTo( 12.0f ) );
+        mMap.animateCamera( CameraUpdateFactory.zoomTo( 12.0f ) );*/
 
 
 
@@ -181,30 +173,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
 
-            case R.id.bmapa:
-                mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-                break;
-
-            case R.id.bhibrido:
-                mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-                break;
-
-            case R.id.bterreno:
-                mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-                break;
-
-            case R.id.binterior:
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-33.86997, 151.2089),18));
-                break;
-
-            default:
-
-                break;
-
-
-        }
     }
 
     private void loadRecyclerViewData(){
@@ -242,7 +211,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                         adapter = new MyAdapter(listItems, getApplicationContext());
                         recyclerView.setAdapter(adapter);
-                        addMarkers();
+                       // addMarkers();
 
                     }
                 },new Response.ErrorListener() {

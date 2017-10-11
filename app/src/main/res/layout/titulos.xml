@@ -10,6 +10,9 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Primeros"
-        android:textAlignment="center"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:background="@color/white"
+        android:textAllCaps="true"
+        android:paddingLeft="20dp"
         android:textStyle="bold" />
 </LinearLayout>

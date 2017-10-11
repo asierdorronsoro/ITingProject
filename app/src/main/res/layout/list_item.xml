@@ -1,56 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:weightSum="1">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_horizontal_margin">
 
         <LinearLayout
             android:id="@+id/linearlayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/borde"
             android:orientation="vertical"
             android:weightSum="1">
 
             <RelativeLayout
-                android:id="@+id/uno"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/distancia"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:text="km" />
-
-                <ImageView
-                    android:id="@+id/imagen"
-                    android:layout_width="400dp"
-                    android:layout_height="90dp"
-                    android:layout_below="@+id/distancia"
-                    android:layout_centerHorizontal="true"
-                    app:srcCompat="@mipmap/ic_launcher" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@android:drawable/btn_star_big_on"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/nombre"
-                    android:layout_toEndOf="@+id/nombre"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginStart="24dp" />
 
                 <EditText
                     android:id="@+id/nombre"
@@ -63,76 +34,94 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/valoracion"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="x"
-                    android:textAlignment="center"
-                    android:layout_alignParentTop="true"
-                    android:layout_toRightOf="@+id/imageView3" />
-
-                <TextView
-                    android:id="@+id/division"
-                    android:layout_width="10dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignTop="@+id/imageView3"
-                    android:layout_toEndOf="@+id/valoracion"
-                    android:text="/5"
-                    android:layout_toRightOf="@+id/valoracion" />
-
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/direccion"
-                android:layout_width="139dp"
-                android:layout_height="wrap_content"
-                android:text="direccion"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/tipo"
-                android:layout_width="96dp"
-                android:layout_height="wrap_content"
-                android:text="tipo"
-                android:textSize="12sp" />
-
             <RelativeLayout
+                android:id="@+id/uno"
                 android:layout_width="match_parent"
-                android:layout_height="52dp">
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    android:id="@+id/imagen"
+                    android:layout_width="245dp"
+                    android:layout_height="90dp"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:layout_marginLeft="99dp"
-                    android:layout_marginStart="99dp"
-                    android:layout_marginTop="13dp"
-                    android:text="Precio: " />
+                    app:srcCompat="@mipmap/ic_launcher" />
 
-                <EditText
-                    android:id="@+id/precio_medio"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
+                <RelativeLayout
+                    android:layout_width="30dp"
+                    android:layout_height="80dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
-                    android:layout_toEndOf="@+id/textView4"
-                    android:layout_toRightOf="@+id/textView4"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="Precio"
-                    android:textAlignment="center"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:layout_toEndOf="@+id/imagen"
+                    android:layout_toRightOf="@+id/imagen">
+
+                    <ImageView
+                        android:id="@+id/imageView16"
+                        android:layout_width="25dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/puntuacion" />
+
+                    <TextView
+                        android:id="@+id/km"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_below="@+id/imageView15"
+                        android:layout_toEndOf="@+id/imageView15"
+                        android:layout_toRightOf="@+id/imageView15"
+                        android:text="TextView" />
+
+                    <TextView
+                        android:id="@+id/valoracion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/imageView15"
+                        android:layout_toRightOf="@+id/imageView15"
+                        android:text="TextView" />
+
+                    <TextView
+                        android:id="@+id/precio_medio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_below="@+id/valoracion"
+                        android:layout_toEndOf="@+id/imageView14"
+                        android:layout_toRightOf="@+id/imageView14"
+                        android:text="TextView" />
+
+                    <ImageView
+                        android:id="@+id/imageView15"
+                        android:layout_width="25dp"
+                        android:layout_height="20dp"
+                        android:layout_above="@+id/imageView14"
+                        android:layout_alignLeft="@+id/imageView14"
+                        android:layout_alignStart="@+id/imageView14"
+                        android:layout_below="@+id/imageView16"
+                        android:src="@drawable/precio" />
+
+                    <ImageView
+                        android:id="@+id/imageView14"
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:src="@drawable/ubicacion"
+                         />
+                </RelativeLayout>
 
             </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </RelativeLayout>
+
         </LinearLayout>
     </android.support.v7.widget.CardView>
 

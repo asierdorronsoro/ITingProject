@@ -62,8 +62,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         final Listitem listitem = listItem.get(position);
         holder.nombre.setText(listitem.getNombre());
-        holder.direccion.setText(listitem.getDireccion());
-        holder.tipo.setText(listitem.getTipo());
+        //holder.direccion.setText(listitem.getDireccion());
+        //holder.tipo.setText(listitem.getTipo());
         holder.valoracion.setText(listitem.getValoracion());
         holder.precio_medio.setText(listitem.getPrecio_medio());
 
@@ -77,8 +77,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             }
         });
 
-        System.out.println("VAMOOOOOOOOOOOOOOOOOOOS"+porfin);
-        //cargarimagen(builder, listitem.getId(), holder);
         cargarimagen(builder, listitem.getId(), holder);
 
 
@@ -88,7 +86,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 Toast.makeText(context, "Id: "+ listitem.getId(), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent();
                 intent.setClass(context, SliderActivity.class);
-
                 Bundle b = new Bundle();
                 b.putString("restaurante_id", listitem.getId());
                 b.putString("nombre", listitem.getNombre());
@@ -102,6 +99,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 intent.putExtras(b);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
+
             }
         });
 
@@ -130,8 +128,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView direccion, tipo;
-        public EditText nombre, valoracion, precio_medio;
+        public TextView  tipo, valoracion,precio_medio;
+        public EditText nombre;
         public ImageView imageView;
         public LinearLayout linearLayout;
 
@@ -139,22 +137,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public ViewHolder(View itemView) {
             super(itemView);
 
-            direccion = (TextView)itemView.findViewById(R.id.direccion);
-            tipo = (TextView)itemView.findViewById(R.id.tipo);
+            //direccion = (TextView)itemView.findViewById(R.id.direccion);
+            //tipo = (TextView)itemView.findViewById(R.id.tipo);
             nombre = (EditText)itemView.findViewById(R.id.nombre);
-            valoracion = (EditText)itemView.findViewById(R.id.valoracion);
-            precio_medio = (EditText)itemView.findViewById(R.id.precio_medio);
+            valoracion = (TextView)itemView.findViewById(R.id.valoracion);
+            precio_medio = (TextView)itemView.findViewById(R.id.precio_medio);
             imageView = (ImageView)itemView.findViewById(R.id.imagen);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.linearlayout);
 
             nombre.setFocusable(false);
             nombre.setClickable(false);
 
-            valoracion.setFocusable(false);
-            valoracion.setClickable(false);
-
-            precio_medio.setFocusable(false);
-            precio_medio.setClickable(false);
         }
     }
 
@@ -173,7 +166,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String code = jsonObject.getString("code");
                             if(code.equals("Log in fallido")){
-
                                System.out.println("Log in fallido!!");
                             }else{
                                 devolver = "http://iting.es/img/".concat(id+"/"+jsonObject.getString("nombre"));
@@ -197,7 +189,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("id_restaurante", id );
-                System.out.println("pppppppppppppppp"+id);
                 return params;
             }
         };

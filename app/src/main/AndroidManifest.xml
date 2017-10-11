@@ -36,13 +36,7 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps">
-
-
-
-
-
-        </activity>
+            android:label="@string/title_activity_maps" />
         <activity android:name=".SliderActivity" />
         <activity android:name=".StartActivity">
             <intent-filter>
@@ -50,12 +44,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
-
         <activity android:name=".Register" />
-        <activity android:name=".LoginSuccess"></activity>
+        <activity
+            android:name=".primer_listado_rests"
+            android:label="@string/title_activity_primerlistado_rests"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".segundo_listado_rests"
+            android:label="@string/title_activity_segundo_listado_rests"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

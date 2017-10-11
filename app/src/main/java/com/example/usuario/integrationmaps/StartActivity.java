@@ -79,7 +79,7 @@ public class StartActivity extends AppCompatActivity {
                                             builder.setTitle("Log in Error");
                                             displayAlert(jsonObject.getString("message"));
                                         }else{
-                                            Intent intent = new Intent(StartActivity.this, MapsActivity.class);
+                                            Intent intent = new Intent(StartActivity.this, primer_listado_rests.class);
                                             Bundle bundle = new Bundle();
                                             bundle.putString("email", jsonObject.getString("email"));
                                             intent.putExtras(bundle);

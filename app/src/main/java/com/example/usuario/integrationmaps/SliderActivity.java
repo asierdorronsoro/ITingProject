@@ -4,13 +4,16 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +24,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class SliderActivity extends AppCompatActivity {
+public class SliderActivity extends MapsActivity implements OnMapReadyCallback {
 
     ViewPager viewPager;
     ScrrenshotAdapter adapter;
@@ -49,10 +61,16 @@ public class SliderActivity extends AppCompatActivity {
     EditText titulo1, titulo2, titulo3;
     TextView plato1, plato2, plato3;
     //------------------------------------------------------
-    EditText nombre, valoracion;
-    TextView tipo, precio, direccion;
+    EditText nombre;
+    TextView tipo, precio, direccion, valoracion;
 
     private LinearLayout parentLinearLayout;
+
+
+    //Mapa
+    private GoogleMap mMap;
+    ScrollView mainScrollView;
+
 
     public SliderActivity(Context context) {
 
@@ -93,11 +111,102 @@ public class SliderActivity extends AppCompatActivity {
 
         parentLinearLayout = (LinearLayout) findViewById(R.id.parent_linear_layout);
 
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+
+        mainScrollView = (ScrollView) findViewById(R.id.scrola);
+        ImageView transparentImageView = (ImageView) findViewById(R.id.transparent_image);
+
+        transparentImageView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow ScrollView to intercept touch events.
+                        mainScrollView.requestDisallowInterceptTouchEvent(true);
+                        // Disable touch on transparent view
+                        return false;
+
+                    case MotionEvent.ACTION_UP:
+                        // Allow ScrollView to intercept touch events.
+                        mainScrollView.requestDisallowInterceptTouchEvent(true);
+                        return false;
+
+                    case MotionEvent.ACTION_MOVE:
+                        mainScrollView.requestDisallowInterceptTouchEvent(true);
+                        return false;
+
+                    default:
+                        return true;
+                }
+            }
+        });
+
 
     }
 
+    private void loadRecyclerViewData(){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DATA,
+                new Response.Listener<String>(){
+                    @Override
+                    public void onResponse(String response) {
+                        rellenarcampos_rest();
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            //String code = jsonObject.getString("code");
+                            for(int i =0;i<jsonArray.length();i++) {
+                                System.out.println(jsonArray.length());
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                Entradamenu entrada = new Entradamenu(
+                                        jsonObject.getString("nombreplato"),
+                                        jsonObject.getString("precio"),
+                                        jsonObject.getString("tipoplato")
+                                );
+
+                                if(entrada.getTipo().equals("Primero")){
+                                    listItems.add(entrada);
+                                    System.out.println(entrada.getNombreplato()+"añadido");
+                                }else if(entrada.getTipo().equals("Segundo")){
+                                    segundos.add(entrada);
+                                }else if(entrada.getTipo().equals("Postre")){
+                                    postres.add(entrada);
+                                }else{
+                                    System.out.println("TIPO NO ASIGNADO!");
+                                }
+                            }
+                            aniadir_conbucle("Primeros", listItems);
+                            aniadir_conbucle("Segundo", segundos);
+                            aniadir_conbucle("Postres", postres);
+
+                        } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                    }
+                },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Algo ha ido mal", Toast.LENGTH_LONG).show();
+                error.printStackTrace();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("restaurante_id", restaurante_id );
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
     public void aniadir_conbucle(String nombre, List<Entradamenu> variable){
-        System.out.println("VAMOOOOOOOOOOOOOOOOOOOOOOOOONO"+variable.size());
 
         LayoutInflater inflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View rowView1 = inflater1.inflate(R.layout.titulos, null);
@@ -122,71 +231,7 @@ public class SliderActivity extends AppCompatActivity {
             // Add the new row before the add field button.
             parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount());
         }
-    }
 
-    private void loadRecyclerViewData(){
-
-
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DATA,
-                new Response.Listener<String>(){
-                    @Override
-                    public void onResponse(String response) {
-                        rellenarcampos_rest();
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-                            //String code = jsonObject.getString("code");
-                            for(int i =0;i<jsonArray.length();i++) {
-                                System.out.println(jsonArray.length());
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                System.out.println(jsonObject + "TIRAAAAAAAAAAAAAAAAAA");
-                                Entradamenu entrada = new Entradamenu(
-                                        jsonObject.getString("nombreplato"),
-                                        jsonObject.getString("precio"),
-                                        jsonObject.getString("tipoplato")
-                                );
-
-                                if(entrada.getTipo().equals("Primero")){
-                                    listItems.add(entrada);
-                                    System.out.println(entrada.getNombreplato()+"añadido");
-                                }else if(entrada.getTipo().equals("Segundo")){
-                                    segundos.add(entrada);
-                                }else if(entrada.getTipo().equals("Postre")){
-                                    postres.add(entrada);
-                                }else{
-                                    System.out.println("TIPO NO ASIGNADO!");
-                                }
-
-                            }
-
-                            aniadir_conbucle("Primeros", listItems);
-                            aniadir_conbucle("Segundo", segundos);
-                            aniadir_conbucle("Postres", postres);
-
-                        } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-
-                    }
-                },new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Algo ha ido mal", Toast.LENGTH_LONG).show();
-                error.printStackTrace();
-
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("restaurante_id", restaurante_id );
-                return params;
-            }
-        };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
     }
 
 
@@ -206,13 +251,13 @@ public class SliderActivity extends AppCompatActivity {
 
         nombre = (EditText)findViewById(R.id.nombre);
         nombre.setText(restauran.getNombre());
-        valoracion = (EditText)findViewById(R.id.valoracion);
+        valoracion = (TextView)findViewById(R.id.valoracion);
         valoracion.setText(restauran.getValoracion());
 
-        direccion = (TextView)findViewById(R.id.direccion);
+        direccion = (TextView)findViewById(R.id.valoracion);
         direccion.setText(restauran.getDireccion());
-        tipo = (TextView)findViewById(R.id.tipo);
-        tipo.setText(restauran.getTipo());
+        //tipo = (TextView)findViewById(R.id.tipo);
+        //tipo.setText(restauran.getTipo());
         precio = (TextView)findViewById(R.id.importe);
         precio.setText(restauran.getPrecio_medio());
 
@@ -226,37 +271,44 @@ public class SliderActivity extends AppCompatActivity {
 
     }
 
-    public void rellenarcampos_menu(){
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
 
-        titulo1 = (EditText)findViewById(R.id.titulo1);
-        titulo1.setText("Primeros");
-        titulo2 = (EditText)findViewById(R.id.titulo2);
-        titulo2.setText("Segundos");
-        titulo3 = (EditText)findViewById(R.id.titulo4);
-        titulo3.setText("Postres");
+        mMap= googleMap;
+        System.out.println("NO PASA DE AQUÍ");
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        LatLng asador = new LatLng(Double.parseDouble(restaurante_lati),Double.parseDouble(restaurante_longi));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(asador));
+        UiSettings mUiSettings = mMap.getUiSettings();
+        mUiSettings.setZoomControlsEnabled(true);
+        mMap.animateCamera( CameraUpdateFactory.zoomTo( 12.0f ) );
 
-        plato1 = (TextView)findViewById(R.id.plato1);
-        plato1.setText(listItems.get(0).getTipo());
-        plato2 = (TextView)findViewById(R.id.plato2);
-        plato2.setText(listItems.get(1).getNombreplato());
-        plato3 = (TextView)findViewById(R.id.plato3);
-        plato3.setText(listItems.get(2).getPrecio());
+        mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ubicacion)).anchor(0.0f, 1.0f).position(asador));
 
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.distance)).anchor(0.0f, 1.0f).position(latLng));
+            }
+        });
 
-        titulo1.setFocusable(false);
-        titulo1.setClickable(false);
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
 
-        titulo2.setFocusable(false);
-        titulo2.setClickable(false);
+                Toast.makeText(getApplicationContext(), "Has pulsado una marca", Toast.LENGTH_LONG).show();
+                //Tambien se podría poner MapsActivity.this en vez de la función!!
 
-        titulo3.setFocusable(false);
-        titulo3.setClickable(false);
-
+                return false;
+            }
+        });
 
 
     }
 
-
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
+}
 

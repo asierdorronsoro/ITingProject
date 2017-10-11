@@ -8,56 +8,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/bmapa"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mapa" />
-
-        <Button
-            android:id="@+id/bhibrido"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hibrido" />
-
-        <Button
-            android:id="@+id/bterreno"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Terreno" />
-
-        <Button
-            android:id="@+id/binterior"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Interiores" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/distancia"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    <!-- <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/map"
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="169dp"
-    tools:context="com.example.usuario.integrationmaps.MapsActivity" />
-<RelativeLayout
+    tools:context="com.example.usuario.integrationmaps.MapsActivity" />!-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/barra">
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="match_parent"
+        android:layout_height="168dp"
+        android:src="@drawable/madera" />
+
+    <RelativeLayout
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
+        <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="384dp"
         android:layout_height="match_parent"
